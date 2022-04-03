@@ -32,19 +32,7 @@ def collect_data(city_code='2398'):
     cards = soup.find_all('a', class_='card-sale_catalogue')
     # print(city, len(cards))
     
-    with open(f'{city}_{cur_time}.csv', 'w') as file:
-        writer = csv.writer(file)
-        
-        writer.writerow(
-            (
-                'Продукт',
-                'Старая цена',
-                'Новая цена',
-                'Процент скидки',
-                'Время акции',
-            )
-        )
-    
+    data = []
     for card in cards:
         card_title = card.find('div', class_='card-sale__title').text.strip()
         
@@ -65,21 +53,27 @@ def collect_data(city_code='2398'):
         card_sale_date = card.find('div', class_='card-sale__date').text.strip().replace('\n', ' ')
         # print(card_sale_date)
         
-        with open(f'{city}_{cur_time}.csv', 'a') as file:
-            writer = csv.writer(file)
+        data.append(
+            [card_title, card_discount, card_old_price, card_price, card_sale_date]
+        )
+        
+    with open(f'{city}_{cur_time}.csv', 'w') as file:
+        writer = csv.writer(file)
+        
+        writer.writerow(
+            [
+                'Продукт',
+                'Старая цена',
+                'Новая цена',
+                'Процент скидки',
+                'Время акции',
+            ]
+        )
+        writer.writerows(
+            data
+        )
             
-            writer.writerow(
-                (
-                    card_title,
-                    card_old_price,
-                    card_price,
-                    card_discount,
-                    card_sale_date
-                )
-            )
-            
-    # print(f'Файл {city}_{cur_time}.csv успешно записан!')
-    return f'{city}_{cur_time}.csv'
+    print(f'Файл {city}_{cur_time}.csv успешно записан!')
         
     
 def main():
