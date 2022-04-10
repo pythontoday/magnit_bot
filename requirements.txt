@@ -2,3 +2,7 @@ requests==2.27.1
 lxml==4.8.0
 beautifulsoup4==4.10.0
 fake-useragent==0.1.11
+aiocsv==1.2.1
+aiofiles==0.8.0
+aiogram==2.19
+asyncio==3.4.3
